@@ -25,6 +25,8 @@ interface IPager extends Components\IComponent
      */
     public function getPaginator();
 
+    public function reset();
+
     public function getWrapperPrototype();
 
     public function getControlPrototype();

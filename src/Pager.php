@@ -122,6 +122,12 @@ class Pager extends Control
         $this->paginator->setPage($page);
     }
 
+    public function reset()
+    {
+        $this->privateSession->set('page', 1);
+        $this->paginator->setPage(1);
+    }
+
     /**
      * @return Paginator
      */
