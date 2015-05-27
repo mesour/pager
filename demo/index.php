@@ -24,14 +24,12 @@ define('SRC_DIR', __DIR__ . '/../src/');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+@mkdir(__DIR__ . '/log');
+
 \Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT, __DIR__ . '/log');
 
 require_once SRC_DIR . 'Pager/Paginator.php';
 require_once SRC_DIR . 'Pager.php';
-
-
-
-\Mesour\UI\Control::$default_link = new \Mesour\Components\Link\Link();
 
 ?>
 

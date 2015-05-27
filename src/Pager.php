@@ -82,7 +82,7 @@ class Pager extends Control
         )
     );
 
-    public function __construct($name = NULL, Components\IComponent $parent = NULL)
+    public function __construct($name = NULL, Components\IContainer $parent = NULL)
     {
         if (is_null($name)) {
             throw new Components\InvalidArgumentException('Component name is required.');
@@ -93,7 +93,7 @@ class Pager extends Control
         $this->privateSession = $this->getSession()->getSection($this->createLinkName());
     }
 
-    public function attached(Components\IComponent $parent)
+    public function attached(Components\IContainer $parent)
     {
         parent::attached($parent);
         $this->snippet = $this->createSnippet();
