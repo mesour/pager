@@ -27,6 +27,10 @@ interface IPager extends Components\IComponent
 
     public function reset();
 
+    /**
+     * @return mixed
+     * @internal
+     */
     public function getForCreate();
 
     public function getWrapperPrototype();
