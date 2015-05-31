@@ -15,7 +15,7 @@ use Mesour\Pager\Paginator;
  * @author mesour <matous.nemec@mesour.com>
  * @package Mesour Pager Component
  */
-class Pager extends Control
+class Pager extends Control implements IPager
 {
 
     const ITEMS = 'items',
@@ -160,10 +160,14 @@ class Pager extends Control
         return $this->ul ? $this->ul : ($this->ul = Components\Html::el($this->option[self::MAIN]['el'], $attributes));
     }
 
-    public function create($data = array())
+    /**
+     * @return Components\Html|string
+     * @throws Components\BadStateException
+     * @throws Components\InvalidArgumentException
+     * @internal
+     */
+    public function getForCreate()
     {
-        parent::create();
-
         $nav = $this->getWrapperPrototype();
 
         $ul = $this->getControlPrototype();
@@ -176,7 +180,7 @@ class Pager extends Control
         }
 
         $first_args = array();
-        if(!$this->paginator->isFirst()) {
+        if (!$this->paginator->isFirst()) {
             $first_args = array(
                 'href' => $this->getApplication()->createLink($this, 'setPage', array(
                     'page' => 0
@@ -191,7 +195,7 @@ class Pager extends Control
 
         for ($i = 1; $i <= $this->paginator->getPageCount(); $i++) {
             $item_args = array();
-            if($this->paginator->getPage() != $i) {
+            if ($this->paginator->getPage() != $i) {
                 $item_args = array(
                     'href' => $this->getApplication()->createLink($this, 'setPage', array(
                         'page' => $i
@@ -206,7 +210,7 @@ class Pager extends Control
         }
 
         $last_args = array();
-        if(!$this->paginator->isLast()) {
+        if (!$this->paginator->isLast()) {
             $last_args = array(
                 'href' => $this->getApplication()->createLink($this, 'setPage', array(
                     'page' => $this->paginator->getPageCount()
@@ -224,6 +228,12 @@ class Pager extends Control
         $this->snippet->add($nav);
 
         return $this->snippet;
+    }
+
+    public function create($data = array())
+    {
+        parent::create();
+        return $this->getForCreate();
     }
 
 }
