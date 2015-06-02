@@ -99,10 +99,9 @@ class Pager extends Control implements IPager
         $this->snippet = $this->createSnippet();
     }
 
-    public function setCounts($total_count, $limit)
+    public function setCount($total_count)
     {
         $this->paginator->setItemCount($total_count);
-        $this->paginator->setItemsPerPage($limit);
 
         $page = $this->privateSession->get('page');
 

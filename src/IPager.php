@@ -18,7 +18,7 @@ use Mesour\Pager\Paginator;
 interface IPager extends Components\IComponent
 {
 
-    public function setCounts($total_count, $limit);
+    public function setCount($count);
 
     /**
      * @return Paginator
