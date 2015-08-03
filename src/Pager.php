@@ -90,13 +90,17 @@ class Pager extends Control implements IPager
         parent::__construct($name, $parent);
         $this->option = self::$defaults;
         $this->paginator = new Paginator;
-        $this->privateSession = $this->getSession()->getSection($this->createLinkName());
+        if(!$this->privateSession) {
+            $this->privateSession = $this->getSession()->getSection($this->createLinkName());
+        }
     }
 
     public function attached(Components\IContainer $parent)
     {
         parent::attached($parent);
         $this->snippet = $this->createSnippet();
+        $this->privateSession = $this->getSession()->getSection($this->createLinkName());
+        return $this;
     }
 
     public function setCount($total_count)
