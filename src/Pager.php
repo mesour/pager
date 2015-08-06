@@ -181,7 +181,6 @@ class Pager extends Control implements IPager
         if ($this->paginator->getPageCount() <= 1) {
             return '';
         }
-
         $first_args = array();
         if (!$this->paginator->isFirst()) {
             $first_args = array(
@@ -241,6 +240,8 @@ class Pager extends Control implements IPager
 
     public function __clone()
     {
+        $this->ul = NULL;
+        $this->wrapper = NULL;
         $this->paginator = clone $this->paginator;
     }
 
