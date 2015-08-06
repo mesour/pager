@@ -243,6 +243,9 @@ class Pager extends Control implements IPager
         $this->ul = NULL;
         $this->wrapper = NULL;
         $this->paginator = clone $this->paginator;
+        parent::__clone();
+
+        $this->privateSession = $this->getSession()->getSection($this->createLinkName());
     }
 
 }
