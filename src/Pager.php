@@ -90,7 +90,7 @@ class Pager extends Control implements IPager
         parent::__construct($name, $parent);
         $this->option = self::$defaults;
         $this->paginator = new Paginator;
-        if(!$this->privateSession) {
+        if (!$this->privateSession) {
             $this->privateSession = $this->getSession()->getSection($this->createLinkName());
         }
     }
@@ -237,6 +237,11 @@ class Pager extends Control implements IPager
     {
         parent::create();
         return $this->getForCreate();
+    }
+
+    public function __clone()
+    {
+        $this->paginator = clone $this->paginator;
     }
 
 }
