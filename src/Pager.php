@@ -141,7 +141,12 @@ class Pager extends Control implements IPager
 
     public function getWrapperPrototype()
     {
-        return $this->wrapper ? $this->wrapper : ($this->wrapper = Components\Html::el($this->option[self::WRAPPER]['el'], $this->option[self::WRAPPER]['attributes']));
+        return $this->wrapper
+            ? $this->wrapper
+            : ($this->wrapper = Components\Html::el(
+                $this->option[self::WRAPPER]['el'],
+                $this->option[self::WRAPPER]['attributes']
+            ));
     }
 
     protected function getItemPrototype(array $attributes = array())
@@ -160,7 +165,9 @@ class Pager extends Control implements IPager
         $attributes = array_merge($attributes, array(
             'data-name' => $this->getName(),
         ));
-        return $this->ul ? $this->ul : ($this->ul = Components\Html::el($this->option[self::MAIN]['el'], $attributes));
+        return $this->ul
+            ? $this->ul
+            : ($this->ul = Components\Html::el($this->option[self::MAIN]['el'], $attributes));
     }
 
     /**
@@ -243,9 +250,8 @@ class Pager extends Control implements IPager
         $this->ul = NULL;
         $this->wrapper = NULL;
         $this->paginator = clone $this->paginator;
-        parent::__clone();
 
-        $this->privateSession = $this->getSession()->getSection($this->createLinkName());
+        parent::__clone();
     }
 
 }
