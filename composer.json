@@ -16,7 +16,6 @@
     "php": ">=5.4.0",
     "mesour/components": "dev-master",
     "mesour/button": "dev-master"
-
   },
   "require-dev": {
     "tracy/tracy": "~2.3.0"

@@ -52,7 +52,9 @@ require_once SRC_DIR . 'Pager.php';
 
     $application->addComponent($pager);
 
-    $pager->setCounts(55, 10);
+    $pager->getPaginator()->setItemsPerPage(10);
+
+    $pager->setCount(55);
 
     $pager->render();
 

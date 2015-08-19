@@ -1,9 +1,10 @@
 <?php
 /**
- * Mesour Pager Component
+ * This file is part of the Mesour Pager (http://components.mesour.com/component/pager)
  *
- * @license LGPL-3.0 and BSD-3-Clause
- * @copyright (c) 2015 Matous Nemec <matous.nemec@mesour.com>
+ * Copyright (c) 2015 Matouš Němec (http://mesour.com)
+ *
+ * For full licence and copyright please view the file licence.md in root of this project
  */
 
 namespace Mesour\UI;
@@ -11,9 +12,10 @@ namespace Mesour\UI;
 use Mesour\Components;
 use Mesour\Pager\Paginator;
 
+
+
 /**
- * @author mesour <matous.nemec@mesour.com>
- * @package Mesour Pager Component
+ * @author Matouš Němec <matous.nemec@mesour.com>
  */
 class Pager extends Control implements IPager
 {
@@ -103,9 +105,9 @@ class Pager extends Control implements IPager
         return $this;
     }
 
-    public function setCount($total_count)
+    public function setCount($totalCount)
     {
-        $this->paginator->setItemCount($total_count);
+        $this->paginator->setItemCount($totalCount);
 
         $page = $this->privateSession->get('page');
 
@@ -188,9 +190,9 @@ class Pager extends Control implements IPager
         if ($this->paginator->getPageCount() <= 1) {
             return '';
         }
-        $first_args = array();
+        $firstArgs = array();
         if (!$this->paginator->isFirst()) {
-            $first_args = array(
+            $firstArgs = array(
                 'href' => $this->getApplication()->createLink($this, 'setPage', array(
                     'page' => 0
                 )),
@@ -199,13 +201,13 @@ class Pager extends Control implements IPager
         }
         $li = $this->getItemPrototype(array(
             'class' => $this->paginator->isFirst() ? 'disabled' : '',
-        ))->add($this->getItemAnchorPrototype($first_args)->setHtml('<span aria-hidden="true">&laquo;</span>'));
+        ))->add($this->getItemAnchorPrototype($firstArgs)->setHtml('<span aria-hidden="true">&laquo;</span>'));
         $ul->add($li);
 
         for ($i = 1; $i <= $this->paginator->getPageCount(); $i++) {
-            $item_args = array();
+            $itemArgs = array();
             if ($this->paginator->getPage() != $i) {
-                $item_args = array(
+                $itemArgs = array(
                     'href' => $this->getApplication()->createLink($this, 'setPage', array(
                         'page' => $i
                     )),
@@ -214,13 +216,13 @@ class Pager extends Control implements IPager
             }
             $li = $this->getItemPrototype(array(
                 'class' => $this->paginator->getPage() == $i ? 'active' : ''
-            ))->add($this->getItemAnchorPrototype($item_args)->setText($i));
+            ))->add($this->getItemAnchorPrototype($itemArgs)->setText($i));
             $ul->add($li);
         }
 
-        $last_args = array();
+        $lastArgs = array();
         if (!$this->paginator->isLast()) {
-            $last_args = array(
+            $lastArgs = array(
                 'href' => $this->getApplication()->createLink($this, 'setPage', array(
                     'page' => $this->paginator->getPageCount()
                 )),
@@ -229,7 +231,7 @@ class Pager extends Control implements IPager
         }
         $li = $this->getItemPrototype(array(
             'class' => $this->paginator->isLast() ? 'disabled' : ''
-        ))->add($this->getItemAnchorPrototype($last_args)->setHtml('<span aria-hidden="true">&raquo;</span>'));
+        ))->add($this->getItemAnchorPrototype($lastArgs)->setHtml('<span aria-hidden="true">&raquo;</span>'));
         $ul->add($li);
 
         $nav->add($ul);
