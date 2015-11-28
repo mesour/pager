@@ -7,8 +7,6 @@
 
 - With [Composer](https://getcomposer.org)
 
-        "require": {
-            "mesour/pager": "dev-master"
-        }
+        composer require mesour/pager
 
 - Or download source from [GitHub](https://github.com/mesour/Pager/releases)
