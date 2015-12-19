@@ -9,15 +9,16 @@
 
 namespace Mesour\UI;
 
-use Mesour\Components;
-use Mesour\Pager\Paginator;
-
+use Mesour;
 
 
 /**
  * @author Matouš Němec <matous.nemec@mesour.com>
+ *
+ * @method null onRender(Mesour\Pager\IPager $pager)
+ * @method Mesour\Components\Control\IControl current()
  */
-class Pager extends Control implements IPager
+class Pager extends Mesour\Components\Control\AttributesControl implements Mesour\Pager\IPager
 {
 
     const ITEMS = 'items',
@@ -29,79 +30,68 @@ class Pager extends Control implements IPager
      * Array of items ID => string|array (statuses)
      * @var array
      */
-    protected $items = array();
+    protected $items = [];
 
-    protected $option = array();
-
-    /**
-     * @var Components\Html
-     */
+    /** @var Mesour\Components\Utils\Html */
     protected $ul;
 
-    /**
-     * @var Components\Html
-     */
-    protected $wrapper;
-
-    /**
-     * @var Components\Html
-     */
+    /** @var Mesour\Components\Utils\Html */
     protected $button;
 
-    /**
-     * @var Paginator
-     */
+    /** @var Mesour\Pager\Paginator */
     protected $paginator;
 
-    /**
-     * @var Components\Html
-     */
+    /** @var Mesour\Components\Utils\Html */
     protected $snippet;
 
-    /**
-     * @var Components\Session\ISessionSection
-     */
+    /** @var Mesour\Components\Session\ISessionSection */
     private $privateSession;
 
-    public $onRender = array();
+    public $onRender = [];
 
-    static public $defaults = array(
-        self::MAIN => array(
+    public $defaults = [
+        self::MAIN => [
             'el' => 'ul',
-            'attributes' => array(
+            'attributes' => [
                 'class' => 'pagination',
-            ),
-        ),
-        self::ITEMS => array(
+            ],
+        ],
+        self::ITEMS => [
             'el' => 'li',
-        ),
-        self::ITEMS_A => array(
+        ],
+        self::ITEMS_A => [
             'el' => 'a',
-        ),
-        self::WRAPPER => array(
+        ],
+        self::WRAPPER => [
             'el' => 'nav',
-            'attributes' => array(),
-        )
-    );
+            'attributes' => [],
+        ]
+    ];
 
-    public function __construct($name = NULL, Components\IContainer $parent = NULL)
+    public function __construct($name = NULL, Mesour\Components\ComponentModel\IContainer $parent = NULL)
     {
         if (is_null($name)) {
-            throw new Components\InvalidArgumentException('Component name is required.');
+            throw new Mesour\InvalidArgumentException('Component name is required.');
         }
         parent::__construct($name, $parent);
-        $this->option = self::$defaults;
-        $this->paginator = new Paginator;
-        if (!$this->privateSession) {
-            $this->privateSession = $this->getSession()->getSection($this->createLinkName());
-        }
+
+        $this->paginator = new Mesour\Pager\Paginator;
+        $this->startPrivateSession();
+
+        $this->setHtmlElement(
+            Mesour\Components\Utils\Html::el(
+                $this->getOption(self::WRAPPER, 'el'),
+                $this->getOption(self::WRAPPER, 'attributes')
+            )
+        );
     }
 
-    public function attached(Components\IContainer $parent)
+    public function attached(Mesour\Components\ComponentModel\IContainer $parent)
     {
         parent::attached($parent);
+
         $this->snippet = $this->createSnippet();
-        $this->privateSession = $this->getSession()->getSection($this->createLinkName());
+        $this->startPrivateSession(TRUE);
         return $this;
     }
 
@@ -134,7 +124,7 @@ class Pager extends Control implements IPager
     }
 
     /**
-     * @return Paginator
+     * @return Mesour\Pager\Paginator
      */
     public function getPaginator()
     {
@@ -143,39 +133,34 @@ class Pager extends Control implements IPager
 
     public function getWrapperPrototype()
     {
-        return $this->wrapper
-            ? $this->wrapper
-            : ($this->wrapper = Components\Html::el(
-                $this->option[self::WRAPPER]['el'],
-                $this->option[self::WRAPPER]['attributes']
-            ));
+        return $this->getHtmlElement();
     }
 
-    protected function getItemPrototype(array $attributes = array())
+    protected function createItemPrototype(array $attributes = [])
     {
-        return Components\Html::el($this->option[self::ITEMS]['el'], $attributes);
+        return Mesour\Components\Utils\Html::el($this->getOption(self::ITEMS, 'el'), $attributes);
     }
 
-    protected function getItemAnchorPrototype(array $attributes = array())
+    protected function createItemAnchorPrototype(array $attributes = [])
     {
-        return Components\Html::el($this->option[self::ITEMS_A]['el'], $attributes);
+        return Mesour\Components\Utils\Html::el($this->getOption(self::ITEMS_A, 'el'), $attributes);
     }
 
     public function getControlPrototype()
     {
-        $attributes = $this->option[self::MAIN]['attributes'];
-        $attributes = array_merge($attributes, array(
+        $attributes = $this->getOption(self::MAIN, 'attributes');
+        $attributes = array_merge($attributes, [
             'data-name' => $this->getName(),
-        ));
+        ]);
         return $this->ul
             ? $this->ul
-            : ($this->ul = Components\Html::el($this->option[self::MAIN]['el'], $attributes));
+            : ($this->ul = Mesour\Components\Utils\Html::el($this->getOption(self::MAIN, 'el'), $attributes));
     }
 
     /**
-     * @return Components\Html|string
-     * @throws Components\BadStateException
-     * @throws Components\InvalidArgumentException
+     * @return Mesour\Components\Utils\Html|string
+     * @throws Mesour\InvalidStateException
+     * @throws Mesour\InvalidArgumentException
      * @internal
      */
     public function getForCreate()
@@ -183,55 +168,55 @@ class Pager extends Control implements IPager
         $nav = $this->getWrapperPrototype();
 
         $ul = $this->getControlPrototype();
-        $ul->addAttributes(array('data-link' => $this->createLinkName()));
+        $ul->addAttributes(['data-link' => $this->createLinkName()]);
 
         $this->onRender($this);
 
         if ($this->paginator->getPageCount() <= 1) {
             return '';
         }
-        $firstArgs = array();
+        $firstArgs = [];
         if (!$this->paginator->isFirst()) {
-            $firstArgs = array(
-                'href' => $this->getApplication()->createLink($this, 'setPage', array(
+            $firstArgs = [
+                'href' => $this->getApplication()->createLink($this, 'setPage', [
                     'page' => 0
-                )),
+                ]),
                 'data-mesour' => 'ajax',
-            );
+            ];
         }
-        $li = $this->getItemPrototype(array(
+        $li = $this->createItemPrototype([
             'class' => $this->paginator->isFirst() ? 'disabled' : '',
-        ))->add($this->getItemAnchorPrototype($firstArgs)->setHtml('<span aria-hidden="true">&laquo;</span>'));
+        ])->add($this->createItemAnchorPrototype($firstArgs)->setHtml('<span aria-hidden="true">&laquo;</span>'));
         $ul->add($li);
 
         for ($i = 1; $i <= $this->paginator->getPageCount(); $i++) {
-            $itemArgs = array();
+            $itemArgs = [];
             if ($this->paginator->getPage() != $i) {
-                $itemArgs = array(
-                    'href' => $this->getApplication()->createLink($this, 'setPage', array(
+                $itemArgs = [
+                    'href' => $this->getApplication()->createLink($this, 'setPage', [
                         'page' => $i
-                    )),
+                    ]),
                     'data-mesour' => 'ajax',
-                );
+                ];
             }
-            $li = $this->getItemPrototype(array(
+            $li = $this->createItemPrototype([
                 'class' => $this->paginator->getPage() == $i ? 'active' : ''
-            ))->add($this->getItemAnchorPrototype($itemArgs)->setText($i));
+            ])->add($this->createItemAnchorPrototype($itemArgs)->setText($i));
             $ul->add($li);
         }
 
-        $lastArgs = array();
+        $lastArgs = [];
         if (!$this->paginator->isLast()) {
-            $lastArgs = array(
-                'href' => $this->getApplication()->createLink($this, 'setPage', array(
+            $lastArgs = [
+                'href' => $this->getApplication()->createLink($this, 'setPage', [
                     'page' => $this->paginator->getPageCount()
-                )),
+                ]),
                 'data-mesour' => 'ajax',
-            );
+            ];
         }
-        $li = $this->getItemPrototype(array(
+        $li = $this->createItemPrototype([
             'class' => $this->paginator->isLast() ? 'disabled' : ''
-        ))->add($this->getItemAnchorPrototype($lastArgs)->setHtml('<span aria-hidden="true">&raquo;</span>'));
+        ])->add($this->createItemAnchorPrototype($lastArgs)->setHtml('<span aria-hidden="true">&raquo;</span>'));
         $ul->add($li);
 
         $nav->add($ul);
@@ -241,7 +226,7 @@ class Pager extends Control implements IPager
         return $this->snippet;
     }
 
-    public function create($data = array())
+    public function create($data = [])
     {
         parent::create();
         return $this->getForCreate();
@@ -249,11 +234,18 @@ class Pager extends Control implements IPager
 
     public function __clone()
     {
-        $this->ul = NULL;
-        $this->wrapper = NULL;
+        $this->ul = clone $this->ul;
+        $this->ul->removeChildren();
         $this->paginator = clone $this->paginator;
 
         parent::__clone();
+    }
+
+    private function startPrivateSession($force = FALSE)
+    {
+        if ($force || !$this->privateSession) {
+            $this->privateSession = $this->getSession()->getSection($this->createLinkName());
+        }
     }
 
 }

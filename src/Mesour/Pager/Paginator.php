@@ -33,7 +33,7 @@ class Paginator
      */
     public function setPage($page)
     {
-        $this->page = (int) $page;
+        $this->page = (int)$page;
         return $this;
     }
 
@@ -75,7 +75,7 @@ class Paginator
      */
     public function setBase($base)
     {
-        $this->base = (int) $base;
+        $this->base = (int)$base;
         return $this;
     }
 
@@ -127,7 +127,7 @@ class Paginator
      */
     public function getPageCount()
     {
-        return $this->itemCount === NULL ? NULL : (int) ceil($this->itemCount / $this->itemsPerPage);
+        return $this->itemCount === NULL ? NULL : (int)ceil($this->itemCount / $this->itemsPerPage);
     }
 
 
@@ -138,7 +138,7 @@ class Paginator
      */
     public function setItemsPerPage($itemsPerPage)
     {
-        $this->itemsPerPage = max(1, (int) $itemsPerPage);
+        $this->itemsPerPage = max(1, (int)$itemsPerPage);
         return $this;
     }
 
@@ -160,7 +160,7 @@ class Paginator
      */
     public function setItemCount($itemCount)
     {
-        $this->itemCount = ($itemCount === FALSE || $itemCount === NULL) ? NULL : max(0, (int) $itemCount);
+        $this->itemCount = ($itemCount === FALSE || $itemCount === NULL) ? NULL : max(0, (int)$itemCount);
         return $this;
     }
 

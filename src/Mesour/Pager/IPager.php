@@ -7,17 +7,15 @@
  * For full licence and copyright please view the file licence.md in root of this project
  */
 
-namespace Mesour\UI;
+namespace Mesour\Pager;
 
-use Mesour\Components;
-use Mesour\Pager\Paginator;
-
+use Mesour;
 
 
 /**
  * @author Matouš Němec <matous.nemec@mesour.com>
  */
-interface IPager extends Components\IComponent
+interface IPager extends Mesour\Components\Control\IAttributesControl
 {
 
     public function setCount($count);
@@ -38,7 +36,5 @@ interface IPager extends Components\IComponent
     public function getWrapperPrototype();
 
     public function getControlPrototype();
-
-    public function create($data = array());
 
 }
