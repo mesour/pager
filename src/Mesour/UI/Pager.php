@@ -234,8 +234,7 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 
     public function __clone()
     {
-        $this->ul = clone $this->ul;
-        $this->ul->removeChildren();
+        $this->ul = NULL;
         $this->paginator = clone $this->paginator;
 
         parent::__clone();
