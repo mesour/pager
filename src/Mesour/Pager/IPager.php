@@ -28,10 +28,11 @@ interface IPager extends Mesour\Components\Control\IAttributesControl
     public function reset();
 
     /**
+     * @param bool|FALSE $navOnly
      * @return mixed
      * @internal
      */
-    public function getForCreate();
+    public function getForCreate($navOnly = FALSE);
 
     public function getWrapperPrototype();
 

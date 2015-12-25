@@ -158,12 +158,13 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
     }
 
     /**
+     * @param bool|FALSE $navOnly
      * @return Mesour\Components\Utils\Html|string
      * @throws Mesour\InvalidStateException
      * @throws Mesour\InvalidArgumentException
      * @internal
      */
-    public function getForCreate()
+    public function getForCreate($navOnly = FALSE)
     {
         $nav = $this->getWrapperPrototype();
 
@@ -175,55 +176,48 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
         if ($this->paginator->getPageCount() <= 1) {
             return '';
         }
-        $firstArgs = [];
-        if (!$this->paginator->isFirst()) {
-            $firstArgs = [
-                'href' => $this->getApplication()->createLink($this, 'setPage', [
-                    'page' => 0
-                ]),
-                'data-mesour' => 'ajax',
-            ];
-        }
-        $li = $this->createItemPrototype([
-            'class' => $this->paginator->isFirst() ? 'disabled' : '',
-        ])->add($this->createItemAnchorPrototype($firstArgs)->setHtml('<span aria-hidden="true">&laquo;</span>'));
-        $ul->add($li);
+
+        $this->addLink(
+            $ul, $this->getPaginator()->getPage() - 1, !$this->paginator->isFirst(),
+            'disabled', '<span aria-hidden="true">&laquo;</span>'
+        );
 
         for ($i = 1; $i <= $this->paginator->getPageCount(); $i++) {
-            $itemArgs = [];
-            if ($this->paginator->getPage() != $i) {
-                $itemArgs = [
-                    'href' => $this->getApplication()->createLink($this, 'setPage', [
-                        'page' => $i
-                    ]),
-                    'data-mesour' => 'ajax',
-                ];
-            }
-            $li = $this->createItemPrototype([
-                'class' => $this->paginator->getPage() == $i ? 'active' : ''
-            ])->add($this->createItemAnchorPrototype($itemArgs)->setText($i));
-            $ul->add($li);
+            $this->addLink($ul, $i, $this->getPaginator()->getPage() != $i);
         }
 
-        $lastArgs = [];
-        if (!$this->paginator->isLast()) {
-            $lastArgs = [
-                'href' => $this->getApplication()->createLink($this, 'setPage', [
-                    'page' => $this->paginator->getPageCount()
-                ]),
-                'data-mesour' => 'ajax',
-            ];
-        }
-        $li = $this->createItemPrototype([
-            'class' => $this->paginator->isLast() ? 'disabled' : ''
-        ])->add($this->createItemAnchorPrototype($lastArgs)->setHtml('<span aria-hidden="true">&raquo;</span>'));
-        $ul->add($li);
+        $this->addLink(
+            $ul, $this->getPaginator()->getPage() + 1, !$this->paginator->isLast(),
+            'disabled', '<span aria-hidden="true">&raquo;</span>'
+        );
 
         $nav->add($ul);
+
+        if ($navOnly) {
+            return $nav;
+        }
 
         $this->snippet->add($nav);
 
         return $this->snippet;
+    }
+
+    protected function addLink(Mesour\Components\Utils\Html $ul, $iteratorCount, $isEnabled = TRUE, $activeClass = 'active', $activeValue = NULL)
+    {
+        $activeValue = is_null($activeValue) ? $iteratorCount : $activeValue;
+        $itemArgs = [];
+        if ($isEnabled) {
+            $itemArgs = [
+                'href' => $this->getApplication()->createLink($this, 'setPage', [
+                    'page' => $iteratorCount
+                ]),
+                'data-mesour' => 'ajax',
+            ];
+        }
+        $li = $this->createItemPrototype([
+            'class' => !$isEnabled ? $activeClass : ''
+        ])->add($this->createItemAnchorPrototype($itemArgs)->setHtml($activeValue));
+        $ul->add($li);
     }
 
     public function create($data = [])
