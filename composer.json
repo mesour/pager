@@ -10,8 +10,8 @@
   }],
   "require": {
     "php": ">=5.5.0",
-    "mesour/components": "dev-master",
-    "mesour/button": "dev-master"
+    "mesour/components": "@dev",
+    "mesour/button": "@dev"
   },
   "require-dev": {
     "tracy/tracy": "~2.3.0"
