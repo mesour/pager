@@ -1,22 +1,22 @@
 {
   "name": "mesour/pager",
   "description": "Mesour Pager component.",
-  "license": ["BSD-3-Clause","GPL-3.0"],
-  "keywords": ["pager","component"],
-  "homepage": "http://mesour.com",
+  "license": ["BSD-3-Clause","GPL-2.0","GPL-3.0"],
+  "keywords": ["pager","component","mesour"],
+  "homepage": "http://components.mesour.com/version3/component/pager/",
   "authors": [{
       "name": "Matouš Němec",
       "homepage": "http://mesour.com"
   }],
   "require": {
     "php": ">=5.5.0",
-    "mesour/components": "@dev",
-    "mesour/button": "@dev"
+    "mesour/components": "3.0.*@beta",
+    "mesour/button": "3.0.*@beta"
   },
   "require-dev": {
     "tracy/tracy": "~2.3.0"
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "beta",
   "autoload": {
     "classmap": ["src/"]
   }
