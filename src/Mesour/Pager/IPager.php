@@ -18,24 +18,24 @@ use Mesour;
 interface IPager extends Mesour\Components\Control\IAttributesControl
 {
 
-    public function setCount($count);
+	public function setCount($count);
 
-    /**
-     * @return Paginator
-     */
-    public function getPaginator();
+	/**
+	 * @return Paginator
+	 */
+	public function getPaginator();
 
-    public function reset();
+	public function reset();
 
-    /**
-     * @param bool|FALSE $navOnly
-     * @return mixed
-     * @internal
-     */
-    public function getForCreate($navOnly = FALSE);
+	/**
+	 * @param bool|FALSE $navOnly
+	 * @return mixed
+	 * @internal
+	 */
+	public function getForCreate($navOnly = false);
 
-    public function getWrapperPrototype();
+	public function getWrapperPrototype();
 
-    public function getControlPrototype();
+	public function getControlPrototype();
 
 }
