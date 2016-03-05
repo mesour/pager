@@ -117,8 +117,7 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 		));
 		$rightGroup->add(sprintf(
 			'<span class="input-group-addon">/ %s</span></span>',
-			$this->paginator->getPageCount(), $this->paginator->getItemCount(),
-			$this->getTranslator()->translate('items')
+			$this->paginator->getPageCount()
 		));
 
 		$groupButton = Mesour\Components\Utils\Html::el('span', ['class' => 'input-group-btn']);

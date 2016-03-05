@@ -1,6 +1,5 @@
 /**
  * Mesour Grid Selection Component - mesour.advancedPager.js
- *
  * @author Matous Nemec (http://mesour.com)
  */
 var mesour = !mesour ? {} : mesour;

@@ -2,12 +2,17 @@
 	  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-
 <style>
 	.select-checkbox,
 	.main-checkbox {
 		height: 22px;
 		width: 25px;
+	}
+
+	.input-group .form-control[data-page-input] {
+		float: right;
+		border-right: none;
+		min-width: 50px;
 	}
 </style>
 
@@ -71,6 +76,8 @@ require_once SRC_DIR . 'Mesour/UI/Pager.php';
 
 	echo $pagerHtml;
 
+	echo '<hr>';
+
 	echo $advancedHtml;
 
 	?>
@@ -87,3 +94,4 @@ require_once SRC_DIR . 'Mesour/UI/Pager.php';
 		crossorigin="anonymous"></script>
 
 <script src="../vendor/mesour/components/public/mesour.components.js"></script>
+<script src="../public/mesour.advancedPager.js"></script>
