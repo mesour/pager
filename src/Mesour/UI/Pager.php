@@ -11,9 +11,8 @@ namespace Mesour\UI;
 
 use Mesour;
 
-
 /**
- * @author Matouš Němec <matous.nemec@mesour.com>
+ * @author Matouš Němec (http://mesour.com)
  *
  * @method null onRender(Mesour\Pager\IPager $pager)
  * @method Mesour\Components\Control\IControl current()
@@ -22,8 +21,11 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 {
 
 	const ITEMS = 'items';
+
 	const ITEMS_A = 'items-a';
+
 	const WRAPPER = 'wrapper';
+
 	const MAIN = 'main';
 
 	/**
@@ -149,9 +151,10 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 	public function getControlPrototype()
 	{
 		$attributes = $this->getOption(self::MAIN, 'attributes');
-		$attributes = array_merge($attributes, [
-			'data-name' => $this->getName(),
-		]);
+		$attributes = array_merge(
+			$attributes,
+			['data-name' => $this->getName()]
+		);
 		return $this->ul
 			? $this->ul
 			: ($this->ul = Mesour\Components\Utils\Html::el($this->getOption(self::MAIN, 'el'), $attributes));
@@ -178,8 +181,11 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 		}
 
 		$this->addLink(
-			$ul, $this->getPaginator()->getPage() - 1, !$this->paginator->isFirst(),
-			'disabled', '<span aria-hidden="true">&laquo;</span>'
+			$ul,
+			$this->getPaginator()->getPage() - 1,
+			!$this->paginator->isFirst(),
+			'disabled',
+			'<span aria-hidden="true">&laquo;</span>'
 		);
 
 		for ($i = 1; $i <= $this->paginator->getPageCount(); $i++) {
@@ -187,8 +193,11 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 		}
 
 		$this->addLink(
-			$ul, $this->getPaginator()->getPage() + 1, !$this->paginator->isLast(),
-			'disabled', '<span aria-hidden="true">&raquo;</span>'
+			$ul,
+			$this->getPaginator()->getPage() + 1,
+			!$this->paginator->isLast(),
+			'disabled',
+			'<span aria-hidden="true">&raquo;</span>'
 		);
 
 		$nav->add($ul);
@@ -202,21 +211,32 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 		return $this->snippet;
 	}
 
-	protected function addLink(Mesour\Components\Utils\Html $ul, $iteratorCount, $isEnabled = true, $activeClass = 'active', $activeValue = null)
-	{
+	protected function addLink(
+		Mesour\Components\Utils\Html $ul,
+		$iteratorCount,
+		$isEnabled = true,
+		$activeClass = 'active',
+		$activeValue = null
+	) {
 		$activeValue = is_null($activeValue) ? $iteratorCount : $activeValue;
 		$itemArgs = [];
 		if ($isEnabled) {
 			$itemArgs = [
-				'href' => $this->getApplication()->createLink($this, 'setPage', [
-					'page' => $iteratorCount,
-				]),
+				'href' => $this->getApplication()->createLink(
+					$this,
+					'setPage',
+					[
+						'page' => $iteratorCount,
+					]
+				),
 				'data-mesour' => 'ajax',
 			];
 		}
-		$li = $this->createItemPrototype([
-			'class' => !$isEnabled ? $activeClass : '',
-		])->add($this->createItemAnchorPrototype($itemArgs)->setHtml($activeValue));
+		$li = $this->createItemPrototype(
+			[
+				'class' => !$isEnabled ? $activeClass : '',
+			]
+		)->add($this->createItemAnchorPrototype($itemArgs)->setHtml($activeValue));
 		$ul->add($li);
 	}
 

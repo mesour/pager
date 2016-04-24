@@ -11,9 +11,8 @@ namespace Mesour\UI;
 
 use Mesour;
 
-
 /**
- * @author Matouš Němec <matous.nemec@mesour.com>
+ * @author Matouš Němec (http://mesour.com)
  *
  * @method null onRender(Mesour\Pager\IPager $pager)
  * @method Mesour\Components\Control\IControl current()
@@ -22,6 +21,7 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 {
 
 	const CONTAINER = 'container';
+
 	const RIGHT_GROUP = 'rightGroup';
 
 	protected $maxForNormal = 15;
@@ -111,14 +111,18 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 			->class('row');
 
 		$rightGroup = $this->createRightGroupPrototype();
-		$rightGroup->add(sprintf(
-			'<input type="text" class="form-control" value="%s" data-page-input="1">',
-			$this->paginator->getPage()
-		));
-		$rightGroup->add(sprintf(
-			'<span class="input-group-addon">/ %s</span></span>',
-			$this->paginator->getPageCount()
-		));
+		$rightGroup->add(
+			sprintf(
+				'<input type="text" class="form-control" value="%s" data-page-input="1">',
+				$this->paginator->getPage()
+			)
+		);
+		$rightGroup->add(
+			sprintf(
+				'<span class="input-group-addon">/ %s</span></span>',
+				$this->paginator->getPageCount()
+			)
+		);
 
 		$groupButton = Mesour\Components\Utils\Html::el('span', ['class' => 'input-group-btn']);
 		$groupButton->add($this->getSwitcherButton());
@@ -145,8 +149,11 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 			return '';
 		}
 		$this->addLink(
-			$ul, $this->getPaginator()->getPage() - 1, !$this->paginator->isFirst(),
-			'disabled', '<span aria-hidden="true">&laquo;</span>'
+			$ul,
+			$this->getPaginator()->getPage() - 1,
+			!$this->paginator->isFirst(),
+			'disabled',
+			'<span aria-hidden="true">&laquo;</span>'
 		);
 
 		// left
@@ -157,8 +164,11 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 		// left separator
 		if ($this->paginator->getPage() > ($this->edgePageCount + $this->middlePageCount + 1)) {
 			$this->addLink(
-				$ul, 0, false,
-				'disabled', '...'
+				$ul,
+				0,
+				false,
+				'disabled',
+				'...'
 			);
 		}
 
@@ -178,10 +188,7 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 
 		// right separator
 		if ($this->paginator->getPage() < $this->paginator->getPageCount() - $this->edgePageCount - 2) {
-			$this->addLink(
-				$ul, 0, false,
-				'disabled', '...'
-			);
+			$this->addLink($ul, 0, false, 'disabled', '...');
 		}
 
 		// right
@@ -196,8 +203,11 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 		}
 
 		$this->addLink(
-			$ul, $this->getPaginator()->getPage() + 1, !$this->paginator->isLast(),
-			'disabled', '<span aria-hidden="true">&raquo;</span>'
+			$ul,
+			$this->getPaginator()->getPage() + 1,
+			!$this->paginator->isLast(),
+			'disabled',
+			'<span aria-hidden="true">&raquo;</span>'
 		);
 
 		$nav->add($ul);

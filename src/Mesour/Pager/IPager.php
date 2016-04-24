@@ -11,9 +11,8 @@ namespace Mesour\Pager;
 
 use Mesour;
 
-
 /**
- * @author Matouš Němec <matous.nemec@mesour.com>
+ * @author Matouš Němec (http://mesour.com)
  */
 interface IPager extends Mesour\Components\Control\IAttributesControl
 {
