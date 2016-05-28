@@ -50,9 +50,7 @@ require_once SRC_DIR . 'Mesour/UI/Pager.php';
 
 	// pager
 
-	$pager = new \Mesour\UI\Pager('pager');
-
-	$application->addComponent($pager);
+	$pager = new \Mesour\UI\Pager('pager', $application);
 
 	$pager->getPaginator()->setItemsPerPage(10);
 
@@ -62,9 +60,7 @@ require_once SRC_DIR . 'Mesour/UI/Pager.php';
 
 	// advanced
 
-	$advanced = new \Mesour\UI\AdvancedPager('advanced_pager');
-
-	$application->addComponent($advanced);
+	$advanced = new \Mesour\UI\AdvancedPager('advanced_pager', $application);
 
 	$advanced->getPaginator()->setItemsPerPage(5);
 

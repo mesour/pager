@@ -78,7 +78,11 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 		parent::__construct($name, $parent);
 
 		$this->paginator = new Mesour\Pager\Paginator;
-		$this->startPrivateSession();
+		try {
+			$this->startPrivateSession();
+		} catch (Mesour\InvalidStateException $e) {
+			throw new Mesour\InvalidStateException('Pager must be attached to application.');
+		}
 
 		$this->setHtmlElement(
 			Mesour\Components\Utils\Html::el(
@@ -93,7 +97,6 @@ class Pager extends Mesour\Components\Control\AttributesControl implements Mesou
 		parent::attached($parent);
 
 		$this->snippet = $this->createSnippet();
-		$this->startPrivateSession(true);
 		return $this;
 	}
 
