@@ -1,5 +1,6 @@
 .idea
 /vendor
+/node_modules
 /composer.lock
 /tests/tmp
 /tests/log
