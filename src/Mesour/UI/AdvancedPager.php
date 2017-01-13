@@ -119,7 +119,7 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 		);
 		$rightGroup->add(
 			sprintf(
-				'<span class="input-group-addon">/ %s</span></span>',
+				'<span class="input-group-addon">/ %s</span>',
 				$this->paginator->getPageCount()
 			)
 		);
