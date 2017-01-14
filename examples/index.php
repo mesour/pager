@@ -50,7 +50,7 @@ require_once SRC_DIR . 'Mesour/UI/Pager.php';
 
 	$advanced->getPaginator()->setItemsPerPage(5);
 
-	$advanced->setCount(105);
+	$advanced->setCount(107);
 
 	$advancedHtml = $advanced->create();
 
