@@ -159,10 +159,11 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 
 	protected function createItemsInfo(Mesour\Components\Utils\Html $rightGroup)
 	{
+		$first = ($this->paginator->getPage() - 1) * $this->paginator->getItemsPerPage();
 		$last = $this->paginator->getPage() * $this->paginator->getItemsPerPage();
 		$rightGroup->add(
 			sprintf('<span class="input-group-addon">%s - %s / %s</span>',
-				($this->paginator->getPage() - 1) * $this->paginator->getItemsPerPage(),
+				$first === 0 ? 1 : $first,
 				$last > $this->paginator->getItemCount() ? $this->paginator->getItemCount() : $last,
 				$this->paginator->getItemCount()
 			)
