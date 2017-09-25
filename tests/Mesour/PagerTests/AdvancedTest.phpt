@@ -2,9 +2,6 @@
 
 namespace Mesour\PagerTests;
 
-use Mesour\DropDown\RandomString\CapturingRandomStringGenerator;
-use Mesour\DropDown\RandomString\IRandomStringGenerator;
-use Mesour\SelectionTests\MockRandomStrings\DefaultTestRandomString;
 use Tester\Assert;
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -23,9 +20,7 @@ class AdvancedTest extends BaseTestCase
 
 		// pager
 
-		$advancedPager = new \Mesour\UI\AdvancedPager('advanced_pager');
-
-		$application->addComponent($advancedPager);
+		$advancedPager = new \Mesour\UI\AdvancedPager('advanced_pager', $application);
 
 		$advancedPager->getPaginator()->setItemsPerPage(5);
 

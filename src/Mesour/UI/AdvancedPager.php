@@ -2,7 +2,7 @@
 /**
  * This file is part of the Mesour Pager (http://components.mesour.com/component/pager)
  *
- * Copyright (c) 2015 Matouš Němec (http://mesour.com)
+ * Copyright (c) 2017 Matouš Němec (http://mesour.com)
  *
  * For full licence and copyright please view the file licence.md in root of this project
  */
@@ -29,6 +29,8 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 	protected $edgePageCount = 3;
 
 	protected $middlePageCount = 2;
+
+	protected $createItemsInfo = true;
 
 	/** @var Mesour\Components\Utils\Html */
 	private $rightGroup;
@@ -61,6 +63,24 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 			$this->getOption(self::CONTAINER, 'el'),
 			$attributes
 		);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isCreateItemsInfo()
+	{
+		return $this->createItemsInfo;
+	}
+
+	/**
+	 * @param bool $createItemsInfo
+	 * @return static
+	 */
+	public function setCreateItemsInfo($createItemsInfo = true)
+	{
+		$this->createItemsInfo = $createItemsInfo;
+		return $this;
 	}
 
 	public function getSwitcherButton()
@@ -118,11 +138,12 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 			)
 		);
 		$rightGroup->add(
-			sprintf(
-				'<span class="input-group-addon">/ %s</span></span>',
-				$this->paginator->getPageCount()
-			)
+			sprintf('<span class="input-group-addon">/ %s</span>', $this->paginator->getPageCount())
 		);
+
+		if ($this->isCreateItemsInfo()) {
+			$this->createItemsInfo($rightGroup);
+		}
 
 		$groupButton = Mesour\Components\Utils\Html::el('span', ['class' => 'input-group-btn']);
 		$groupButton->add($this->getSwitcherButton());
@@ -134,6 +155,20 @@ class AdvancedPager extends Pager implements Mesour\Pager\IPager
 			->class('row');
 
 		return $this->snippet;
+	}
+
+	protected function createItemsInfo(Mesour\Components\Utils\Html $rightGroup)
+	{
+		$first = ($this->paginator->getPage() - 1) * $this->paginator->getItemsPerPage();
+		$last = $this->paginator->getPage() * $this->paginator->getItemsPerPage();
+		$rightGroup->add(
+			sprintf(
+				'<span class="input-group-addon">%s - %s / %s</span>',
+				$first === 0 ? 1 : $first,
+				$last > $this->paginator->getItemCount() ? $this->paginator->getItemCount() : $last,
+				$this->paginator->getItemCount()
+			)
+		);
 	}
 
 	protected function createNav()
